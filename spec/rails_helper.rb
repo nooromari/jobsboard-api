@@ -2,14 +2,16 @@
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 
+# require database cleaner at the top level
 require 'database_cleaner'
 
 require File.expand_path('../config/environment', __dir__)
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'rspec/rails'
+
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -43,6 +45,7 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -52,26 +55,26 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-    # add `FactoryBot` methods
-    config.include FactoryBot::Syntax::Methods
+  # add `FactoryBot` methods
+  config.include FactoryBot::Syntax::Methods
 
-    # config.include RequestSpecHelper, type: :request
-    config.include RequestSpecHelper
-    config.include ControllerSpecHelper
-    
-    # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
-    config.before(:suite) do
-      DatabaseCleaner.clean_with(:truncation)
-      DatabaseCleaner.strategy = :transaction
-    end
+  # config.include RequestSpecHelper, type: :request
+  config.include RequestSpecHelper
+  config.include ControllerSpecHelper
   
-    # start the transaction strategy as examples are run
-    config.around(:each) do |example|
-      DatabaseCleaner.cleaning do
-        example.run
-      end
+  # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.strategy = :transaction
   end
 
+  # start the transaction strategy as examples are run
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+  
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
