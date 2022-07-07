@@ -1,5 +1,7 @@
-class Job < ApplicationRecord
-    has_many :applications, dependent: :destroy
+# frozen_string_literal: true
 
-    validates_presence_of :title, :description
+class Job < ApplicationRecord
+  has_many :applications, dependent: :destroy
+
+  validates_presence_of :title, :description
 end

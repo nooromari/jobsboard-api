@@ -1,33 +1,37 @@
+# frozen_string_literal: true
+
+# ApplicationsController is for controll applications
 class ApplicationsController < ApplicationController
+  before_action :set_job, :set_user_id
+  before_action :set_job_application, only: %i[show update]
+  authorize_resource
 
-    before_action :set_application, only: [:show, :update]
+  def index
+    @applications = Application.all
+    json_response(@applications)
+  end
 
-    def index 
-        @applications = Application.all
-        json_response(@applications)
-    end
+  def create
+    @application = Application.apply(@user_id, @job.id)
+    json_response(@application, :created)
+  end
 
-    def create 
-        @application = Application.create!(application_params)
-        json_response(@application, :created)
-    end
+  def show
+    @application.update(seen: true)
+    json_response(@application)
+  end
 
-    def show 
-        json_response(@application)
-    end
+  private
 
-    def update 
-        @application.update(application_params)
-        head :no_content
-    end
+  def set_job
+    @job = Job.find(params[:job_id])
+  end
 
-    private
+  def set_job_application
+    @application = @job.applications.find_by!(id: params[:id]) if @job
+  end
 
-    def application_params
-        params.permit(:job_id, applier_id: :user_id)
-    end
-
-    def set_application
-        @application = Application.find(params[:id])
-    end
+  def set_user_id
+    @user_id = current_user.id
+  end
 end
