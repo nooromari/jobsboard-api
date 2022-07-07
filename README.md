@@ -18,6 +18,22 @@ Jobs Board backend API, where the User can List Job Posts and Apply to Jobs, the
 3. To run the project :
     - run `rails s`.
 
+## API's Documentation
+
+- **Sign up** --> `POST   /signup`
+- **Login** --> `POST   /auth/login`
+- **List All Jobs** --> `GET   /jobs`
+- **Show Job** --> `GET    /jobs/:id`
+- **Create Application** --> `POST   /jobs/:job_id/applications`
+
+### Authorized for admin only
+
+- **Create Job** --> `POST   /jobs`
+- **Update Job** --> `PUT   /jobs/:id`
+- **Delete Job** --> `DELETE   /jobs/:id`
+- **List All Job Applications** --> `GET   /jobs/:job_id/applications`
+- **Show Application** --> `GET    /jobs/:job_id/applications/:id`
+
 <!-- ## [Live URL]() -->
 
 <!-- This README would normally document whatever steps are necessary to get the

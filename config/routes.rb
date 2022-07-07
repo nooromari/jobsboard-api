@@ -1,6 +1,11 @@
-Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+# frozen_string_literal: true
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+Rails.application.routes.draw do
+  resources :jobs do
+    resources :applications, only: %i[index create show]
+  end
+
+  post 'auth/login', to: 'authentication#authenticate'
+
+  post 'signup', to: 'users#create'
 end
